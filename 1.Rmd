@@ -1,0 +1,199 @@
+---
+title: "PSTAT 10 Review Sheet"
+author: "Tianle Yu"
+date: "2022-11-16"
+output:
+  html_document:
+    toc: yes
+    theme: readable
+    toc_float: yes
+  pdf_document:
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Data in R
+
+## Datatype
+\
+* integer\
+* double\
+* logical\
+* char\
+
+```{r}
+a <- "Hi"
+typeof(a)
+a <- 1
+typeof(a)
+a <- 1L
+typeof(a)
+```
+
+## Data Structure
+\
+ - Vector\
+ - Matrix\
+ - Array\
+ - Dataframe\
+ - List\
+ - Factor\
+
+### Vector
+
+```{r}
+# Vector:
+v <- 1:6
+typeof(v)
+v <- c(1,2,3,4,5,6)
+typeof(v)
+is.vector(v)
+class(v)
+```
+
+### Matrix
+
+```{r}
+# Matrix
+# Create 4x3 matrix
+m <- matrix(1:5,nrow=4,ncol=3,byrow=F)
+m
+(1:10)+(2:5)
+dim(m)
+m[1:3,2]
+rownames(m) <- c("A","B","C","D")
+m
+m["A",]
+m[c("A","B"),]
+m[c(1,2),]
+```
+
+### Array
+
+```{r}
+# Array
+a <- array(1:120,dim=c(5,5,3))
+a[2,2,2]
+dimnames(a) <- list(c("A","B","C","D","E"),c("A","B","C","D","E"),c("A","B","C"))
+# a
+a[c(3,5),2,]
+```
+
+### Dataframe
+
+```{r}
+# Dataframe
+d <- data.frame(1:3,c("A","B","C"),factor(c("D","D","A")),c("F","G",NA))
+#d
+d[1]
+d[[1]]
+colnames(d) <- c("F","G","H")
+d
+d[c(T,F,T),]
+d[d$F==2,]
+```
+
+### List
+
+```{r}
+# List
+l <- list(1:5,c("A","B"),factor(c("A","A","B","C")))
+l
+l[[1]]
+l[[2]][2]
+```
+
+### Factor
+
+```{r}
+# Factor
+# Unordered
+factor(c("A+","A","A"))
+
+# Ordered: order by ascii order
+factor(c("A+","A","A-"),ordered = T)
+
+# Ordered: order by assign order
+factor(c("A+","A","A","A-"),ordered = T,levels = c("A-","A","A+"))
+
+```
+
+# Control Structure
+
+## Variable Name
+```{r, error=T}
+a <- 1
+b <- "123"
+ABC <- 2
+abc <- 234
+sdf2 <- 23234
+2432ds <- 342
+342 <- 344534
+fhdus_ <- 3242
+_fdusif <- 344
+fhus_dsaf <- 2453
+for <- 3423
+```
+
+## Logical
+```{r}
+if(1==2){
+  print("NMSL")
+}else{
+  print("NMHL")
+}
+```
+
+## Loop
+### While
+```{r}
+x <- 10
+while(x>0){
+  print(x)
+  x <- x-1
+}
+```
+### For
+```{r}
+fdsfds = c("a","b","c")
+for(i in fdsfds){
+  print(i)
+}
+```
+## Function
+```{r}
+absoluteVal <- function(parameter){
+  if(!is.numeric(parameter))
+    return(FALSE)
+  
+  if(parameter<0)
+    return(-parameter)
+  else
+    return(parameter)
+  
+}
+myfunc <- function(input){
+  if(input<10)
+    return(input)
+  else if(input<20){
+    input <- input + 10
+    return(input)
+  }
+  else{
+    input <- input -10
+    return(input)
+  }
+}
+
+absoluteVal("Dgfdsg")
+absoluteVal(2)
+absoluteVal(-3)
+```
+
+# Plot & Graph
+
+
