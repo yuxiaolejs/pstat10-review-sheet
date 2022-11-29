@@ -195,5 +195,135 @@ absoluteVal(-3)
 ```
 
 # Plot & Graph
+## Import Dataframe
+### From csv
+```{r}
+df <- read.csv("./sleep.csv")
+```
+### From database
+
+## Graphs
+### Plot
+Graph of points, relation between X and Y
+```{r}
+plot(df$age,df$sleep,xlab = "Age",ylab="Hours of sleep",main="Age vs. hours of sleep",pch=1)
+```
+
+### Histogram
+Distribution of certain continuous (numeric) column
+```{r}
+hist(df$age)
+```
+
+### Barplot
+Discrete data / Categorical data distribution / count
+```{r}
+barplot(table(df$standing),main = "123",col=c("red","green"))
+```
+
+### Boxplot
+```{r}
+summary(df$age)
+```
+
+```{r}
+boxplot(df$age)
+```
+```{r}
+boxplot(df$sleep~df$gender,col=c("red","green","purple"))
+```
+
+# Probability
+## Range\
+$\mathbb{P}(x) \in [0,1]$\
+
+## Calculation
+$\mathbb{P}(x \cap y)$\
+$\mathbb{P}(x \cup y) = \mathbb{P}(x) + \mathbb{P}(y) - \mathbb{P}(x \cap y)$\
+
+
+$\mathbb{P}(x|y) = \frac{\mathbb{P}(x \cap y)}{\mathbb{P}(y)}$
+
+## Property
+Muturally Exclusive\
+$\mathbb{P}(x \cap y) = 0$\
+
+Independent\
+$\mathbb{P}(x \cap y) = \mathbb{P}(x) \cdot \mathbb{P}(y)$\
+
+# Distribution
+## Functions
+ - P.M.F.  Probability mass function\
+ - C.D.F.  Cumulative distribution function\
+ - P.D.F.  Probability Density Function\
+ 
+## R Functions
+ - dxxx $\rightarrow$ P.M.F or P.D.F\
+ - pxxx $\rightarrow$ C.D.F
+ - rxxx $\rightarrow$ Run experiment
+ - qxxx $\rightarrow$ Inverse of pxxx
+ 
+## Uniform Distribution
+ - Constant probability\
+ - Continous\
+A bus arrives at a stop every 10 minutes. A student is equally
+likely to arrive at the stop at any time. How long will the student
+have to wait?\
+
+$\mathbb{P}(X \leq x)$ $\rightarrow$ C.D.F(x) $\rightarrow$ punif(x,min,max)\
+Prob of waiting for 3 mins or less\
+$\mathbb{P}(X \leq 3)$\
+```{r}
+punif(3,0,10)
+```
+
+Prob of waiting for 3-5 mins\
+$\mathbb{P}(3 \leq X \leq 5) = \mathbb{P}(X \leq 5) - \mathbb{P}(X \leq 3)$\
+```{r}
+punif(5,0,10) - punif(3,0,10)
+```
+
+```{r}
+punif(0:10,0,10)
+```
+## Binomial Distribution
+ - Constant number of trials\
+ - Two outcomes for every trial: Success or Fail\
+ - Constant probability between trials\
+ - Trails need to independent\
+
+$\mathbb{P}(X=x)$ $\rightarrow$ P.M.F(x) $\rightarrow$ dbinom(x,trials,probability of success)\
+$\mathbb{P}(X \leq x)$ $\rightarrow$ C.D.F(x) $\rightarrow$ pbinom(x,trials,probability of success)\
+```{r}
+plot(dbinom(0:10,10,0.5))
+```
+
+Toss a coin 10 times, getting 5 heads
+```{r}
+dbinom(5,10,0.5)
+```
+
+Toss a coin 10 times, getting less than 5 heads
+$\mathbb{P}(X \leq 5)$ $\rightarrow$ C.D.F(5) $\rightarrow$ pbinom(5,n,p)\
+```{r}
+sum(dbinom(0:4,10,0.5))
+pbinom(4,10,0.5)
+cumsum(dbinom(0:10,10,0.5))[5]
+```
+
+$\mathbb{P}(X \leq 4.1)$ $\rightarrow$ C.D.F(4.1) $\rightarrow$ pbinom(4.1,n,p)\
+```{r}
+pbinom(4.1,10,0.5)
+plot(pbinom(0:10,10,0.5),type="s")
+```
+Probability of getting 3-7 heads (inclusive)
+```{r}
+pbinom(7,10,0.5)-pbinom(2,10,0.5)
+pbinom(7,10,0.5)-pbinom(3,10,0.5) + dbinom(3,10,0.5)
+```
+
+## Normal Distribution
+
+# SQL
 
 
