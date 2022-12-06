@@ -377,7 +377,6 @@ dbListTables(conn)
 
 ## Get table info
 ```{r}
-Track.GenreId -> Genre.GenreId
 dbGetQuery(conn,"PRAGMA table_info(course_info)")
 dbGetQuery(conn,"PRAGMA foreign_key_list(course_info)")
 ```
@@ -390,17 +389,17 @@ ThisTable.column(Foreign Key) -> OtherTable.column(Primary Key)
 ```{r,eval=FALSE}
 dbGetQuery(conn,"
 SELECT
-	字段名1,
+	COL_NAME,
 	COUNT(*)
-	SUM(字段)
-	AVG(字段名)
-	LENGTH(字段名)
+	SUM(COL)
+	AVG(COL)
+	LENGTH(COL)
 FROM
-	表名
-	WHERE 条件 AND 条件 ...
-	GROUP BY 字段名
-	HAVING 条件 OR 条件 ...
-	ORDER BY 字段名 DESC
+	TABLE
+	WHERE LOGIC AND LOGIC ...
+	GROUP BY COL
+	HAVING LOGIC OR LOGIC ...
+	ORDER BY COL DESC
 ")
 ```
 
