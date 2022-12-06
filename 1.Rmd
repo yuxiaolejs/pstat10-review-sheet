@@ -49,7 +49,7 @@ typeof(a)
 # Vector:
 v <- 1:6
 typeof(v)
-v <- c(1,2,3,4,5,6)
+v1 <- c(1,2,3,4,5,6)
 typeof(v)
 is.vector(v)
 class(v)
@@ -323,7 +323,120 @@ pbinom(7,10,0.5)-pbinom(3,10,0.5) + dbinom(3,10,0.5)
 ```
 
 ## Normal Distribution
+ - Continous
+ - 68% 95% 99.7%
+ - $\mathbb{P}(X=x)=0$ $\rightarrow$ P.D.F(x) $\rightarrow$ dnorm(x,mean,std)\
+ - $\mathbb{P}(X \leq x)$ $\rightarrow$ C.D.F(x) $\rightarrow$ pnorm(x,mean,std)\
+
+ 
+```{r}
+plot(dnorm(1:20,10,2))
+plot(pnorm(1:20,10,2),type="s")
+
+pnorm(12,10,2,lower.tail=FALSE)
+pnorm(8,10,2,lower.tail=TRUE)
+qnorm(0.1586553,10,2,lower.tail = TRUE)
+
+```
+
+### Check normality:
+```{r}
+data <- rnorm(300,10,2)
+library(palmerpenguins)
+qqnorm(data)
+qqline(data, col = "red")
+
+```
+
 
 # SQL
+## Create Connection
+```{r}
+library(DBI)
+library(RSQLite)
+conn <- dbConnect(dbDriver("SQLite"),"./database.sqlite")
+```
 
+## Write to DB
+```{r}
+course_info <- read.csv("./f22_offerings/course_info.csv")
+offerings <- read.csv("./f22_offerings/offerings.csv")
+professors <- read.csv("./f22_offerings/professors.csv")
+teaching_assistants <- read.csv("./f22_offerings/teaching_assistants.csv")
+
+dbWriteTable(conn,"course_info",course_info, overwrite=TRUE)
+dbWriteTable(conn,"offerings",offerings, overwrite=TRUE)
+dbWriteTable(conn,"professors",professors, overwrite=TRUE)
+dbWriteTable(conn,"teaching_assistants",teaching_assistants, overwrite=TRUE)
+```
+
+## Get table list
+```{r}
+dbListTables(conn)
+```
+
+## Get table info
+```{r}
+Track.GenreId -> Genre.GenreId
+dbGetQuery(conn,"PRAGMA table_info(course_info)")
+dbGetQuery(conn,"PRAGMA foreign_key_list(course_info)")
+```
+## Foreign Key
+
+ThisTable.column(Foreign Key) -> OtherTable.column(Primary Key)
+
+## Insert, Delete, Update, Select
+### SELECT
+```{r,eval=FALSE}
+dbGetQuery(conn,"
+SELECT
+	字段名1,
+	COUNT(*)
+	SUM(字段)
+	AVG(字段名)
+	LENGTH(字段名)
+FROM
+	表名
+	WHERE 条件 AND 条件 ...
+	GROUP BY 字段名
+	HAVING 条件 OR 条件 ...
+	ORDER BY 字段名 DESC
+")
+```
+
+```{r}
+dbGetQuery(conn,"SELECT Title,courseid FROM course_info")
+dbGetQuery(conn,"SELECT Title,courseid FROM course_info ORDER BY title")
+dbGetQuery(conn,"SELECT * FROM offerings ORDER BY courseid")
+dbGetQuery(conn,"SELECT days,COUNT(*) FROM offerings GROUP BY days HAVING days='M' ORDER BY courseid")
+dbGetQuery(conn,"SELECT days,COUNT(*) FROM offerings WHERE days='M' GROUP BY days ORDER BY courseid")
+```
+```{r}
+dbGetQuery(conn,"SELECT c.courseid, o.courseid, title, days FROM course_info c INNER JOIN offerings o ON c.courseid=o.courseid")
+dbGetQuery(conn,"SELECT LENGTH(title),c.courseid, o.courseid, title, days FROM course_info AS c INNER JOIN offerings AS o ON c.courseid=o.courseid ORDER BY LENGTH(title) DESC")
+```
+
+### UPDATE
+```{r}
+dbExecute(conn,"UPDATE course_info SET courseid = 'PSTAT 5AA' WHERE courseid='PSTAT 5A'")
+dbGetQuery(conn,"SELECT Title,courseid FROM course_info")
+```
+
+### INSERT
+```{r}
+dbExecute(conn,"INSERT INTO course_info (Title, CourseID) VALUES('Test','TEST 1')")
+dbExecute(conn,"INSERT INTO course_info VALUES('TEST 2','Test 2','TEST 1')")
+dbGetQuery(conn,"SELECT * FROM course_info")
+```
+
+### DELETE
+```{r}
+dbExecute(conn,"DELETE FROM course_info WHERE Title LIKE '%test%'")
+dbGetQuery(conn,"SELECT * FROM course_info")
+```
+
+## Disconnect
+```{r}
+dbDisconnect(conn)
+```
 

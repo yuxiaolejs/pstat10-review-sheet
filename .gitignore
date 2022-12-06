@@ -1,1 +1,5 @@
 *.html
+.Rhistory
+.RData
+*.sqlite
+f22_offerings
